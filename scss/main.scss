@@ -1,0 +1,419 @@
+@charset "UTF-8";
+@import "normalize";
+
+$default-margin: 7px;
+
+$body-bg:     #fff;
+$text-color:  #333;
+$link-color:  #08c;
+
+$default-color:         #333;
+$default-bg:            #f5f5f5;
+$default-border-color:  darken($default-bg, 15%);
+$default-border-width:  1px;
+
+$primary-color:     #fff;
+$primary-bg:        #0078e7;
+$success-color:     #fff;
+$success-bg:        #00d46b;
+$warning-color:     #fff;
+$warning-bg:        #ffc100;
+$error-color:       #fff;
+$error-bg:          #e70048;
+$info-color:        #555;
+$info-bg:           #fcf8e3;
+$info-border-color: darken($info-bg, 15%);
+$info-border-width: 1px;
+
+@mixin clearfix {
+  &:before,
+  &:after {
+    content: ' ';
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+body {
+  padding-top: $default-margin;
+}
+
+h2 {
+  margin-top: 20px;
+  padding-bottom: $default-margin;
+  font-size: 21px;
+  color: $text-color;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+h3 {
+  margin: 0;
+  margin-bottom: $default-margin * 2;
+  font-size: medium;
+  font-weight: bold;
+}
+
+section {
+  margin: $default-margin;
+  margin-top: 0;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: $link-color;
+  text-decoration: none;
+}
+
+img {
+  vertical-align: middle;
+}
+
+.btn {
+  display: inline-block;
+  padding: 4px 12px;
+  margin-bottom: 0;
+  line-height: 30px;
+  color: $default-color;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  vertical-align: middle;
+  cursor: pointer;
+  background-color: $default-bg;
+  border: 1px solid #ccc;
+  border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+
+  &.block {
+    display: block;
+    width: 100%;
+    margin-top: $default-margin;
+    padding-right: 0;
+    padding-left: 0;
+    box-sizing: border-box;
+  }
+
+  &.primary {
+    color: $primary-color;
+    background-color: $primary-bg;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  }
+}
+
+.close {
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  float: right;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 20px;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: .2;
+}
+
+%info-base {
+  color: $info-color;
+  background-color: $info-bg;
+  border: $info-border-width solid $info-border-color;
+}
+
+.info {
+  @extend %info-base;
+  padding: $default-margin * 2;
+  line-height: 1.3em;
+
+  &.error {
+    color: $error-color;
+    background-color: $error-bg;
+    border-color: $error-bg;
+    font-weight: bold;
+
+    .close {
+      color: $error-color;
+      opacity: 1;
+    }
+  }
+
+  h4 {
+    margin: $default-margin * 2 0;
+    padding-bottom: 3px;
+    font-weight: normal;
+    border: {
+      color: $info-border-color;
+      style: solid;
+      width: 0 0 1px 0;
+    }
+  }
+
+  section {
+    margin: 0 0 0 1em;
+  }
+
+  ul {
+    margin: $default-margin 0;
+    padding-left: 2em;
+  }
+
+  p {
+    margin-top: $default-margin;
+  }
+
+  div {
+    cursor: pointer;
+  }
+
+  div.undo {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+}
+
+.info-small {
+  @extend %info-base;
+  padding: 4px 12px;
+}
+
+.well {
+  padding: $default-margin * 2;
+  background-color: $default-bg;
+  border: $default-border-width solid $default-border-color;
+}
+
+#toast {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: $default-margin;
+  z-index: 100;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+
+  /* フェードイン/アウト用。AngularJS実行前に一瞬表示されるのを防ぐ。 */
+  display: none;
+}
+
+/* #toastのフェードイン/アウト用。AngularJS実行後のみ以下が適用される。 */
+.ng-scope {
+  #toast {
+    display: block !important;
+
+    opacity: 1;
+    visibility: visible;
+    transition: all .3s ease;
+
+    &.ng-hide {
+      opacity: 0;
+      visibility: hidden;
+      transition: all 1s ease;
+    }
+  }
+}
+
+#mobamasMenu {
+  text-align: center;
+  margin-bottom: 0;
+
+  a {
+    border-radius: $default-margin;
+    margin-bottom: $default-margin;
+    min-width: 15%;
+  }
+}
+
+#viewSettings {
+  border: $default-border-width solid $default-border-color;
+
+  h3 {
+    cursor: pointer;
+    color: $default-color;
+    background-color: $default-bg;
+    margin: 0;
+    padding: 4px 12px;
+    line-height: 30px;
+    vertical-align: middle;
+  }
+
+  & > section {
+    margin: $default-margin * 2;
+  }
+}
+
+.form {
+  section {
+    margin-bottom: $default-margin * 2;
+  }
+
+  small {
+    display: block;
+    margin-top: 0.5em;
+    margin-left: 1em;
+  }
+
+  label {
+    display: block;
+    margin-top: $default-margin;
+    height: 1.5em;
+    line-height: 1.5em;
+  }
+
+  label,
+  select,
+  button,
+  input[type="button"],
+  input[type="reset"],
+  input[type="submit"],
+  input[type="radio"],
+  input[type="checkbox"] {
+    cursor: pointer;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding-right: 0;
+    padding-left: 0;
+    box-sizing: border-box;
+  }
+
+  select {
+    font-size: 1.2em;
+  }
+
+  .settings-mobamas-menu {
+    @include clearfix;
+
+    label {
+      width: 33%;
+      float: left;
+      overflow: hidden;
+    }
+  }
+}
+
+#dojos {
+  .dojo {
+    position: relative;
+    margin-top: $default-margin;
+    padding: 0;
+    width: 100%;
+    min-height: 40px;
+    text-align: left;
+    font-weight: bold;
+    color: $primary-color;
+    background-color: $primary-bg;
+    text-shadow: none;
+
+    .dojo-link {
+      display: block;
+      padding: 4px 12px;
+      overflow: hidden;
+      color: inherit;
+
+      .detail {
+        position: relative;
+        z-index: 1;
+      }
+
+      span.defense {
+        display: inline-block;
+        position: absolute;
+        bottom: -4px;
+        right: 40px;
+        font-size: 200%;
+        font-style: italic;
+        color: rgba(255, 255, 255, 0.3);
+        text-shadow: none;
+      }
+
+      .extraInfo div {
+        font-size: 80%;
+        line-height: 1.5em;
+      }
+
+      em {
+        font-style: normal;
+      }
+    }
+
+    .hide-dojo {
+      display: block;
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      height: 38px;
+      width: 38px;
+      border-width: 0;
+      color: inherit;
+      background-color: transparent;
+      z-index: 2;
+    }
+
+    &.success {
+      color: $success-color;
+      background-color: $success-bg;
+    }
+
+    &.warning {
+      color: $warning-color;
+      background-color: $warning-bg;
+    }
+
+    &.error {
+      color: $error-color;
+      background-color: $error-bg;
+    }
+  }
+}
+
+.extendedView {
+  span.defense {
+    right: 5px !important;
+    color: #FFF !important;
+  }
+}
+
+/* 作業中や発揮値っぽい物を強調する */
+.emphasizedView {
+  em {
+    display: inline-block;
+    margin: 0 3px;
+    padding: 3px 0.5em;
+
+    line-height: normal;
+    border-radius: 3px;
+
+    /* 作業中 */
+    &.paused {
+      color: white;
+      background-color: red;
+    }
+
+    /* 発揮値 */
+    &.defenseValue {
+      color: white;
+      background-color: darkorange;
+    }
+  }
+}
+
+#about {
+  line-height: 1.5em;
+
+  small {
+    display: block;
+    margin-left: 1em;
+  }
+
+  ul {
+    margin: 0;
+  }
+}
+
+ins.adsbygoogle {
+  background-color: azure;
+}

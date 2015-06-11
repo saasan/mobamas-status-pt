@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja" ng-app="mobamasStatusPt" ng-controller="MainController">
+  <head>
+    <meta charset="UTF-8">
+    <title>モバマス振り分けpt計算機</title>
+    <link rel="apple-touch-icon" href="//saasan.github.io/img/s2works_favicon.png">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+    <script src="js/main.min.js"></script>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  </head>
+  <body>
+    <noscript>
+      <p>JavaScriptを有効にして下さい。</p>
+    </noscript>
+
+    <section>
+      <!-- 振り分けpt レスポンシブ -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-0141905477316976"
+           data-ad-slot="5577065370"
+           data-ad-format="auto"></ins>
+    </section>
+
+    <section class="well">
+      <form name="calcStatusPt">
+        <table>
+          <tr>
+            <th></th>
+            <th>現在値</th>
+            <th>基礎値</th>
+            <th>振り分け済pt</th>
+          </tr>
+          <tr>
+            <td>レベル</td>
+            <td><label><input type="number" name="level" ng-model="$storage.level" min="1" required></label></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>スタミナ</td>
+            <td><label><input type="number" name="stamina" ng-model="$storage.stamina" min="1" required></label></td>
+            <td>{{ baseStamina }}</td>
+            <td>{{ staminaPt }}</td>
+          </tr>
+          <tr>
+            <td>攻コスト</td>
+            <td><label><input type="number" name="attack" ng-model="$storage.attack" min="1" required></label></td>
+            <td>{{ baseAttack }}</td>
+            <td>{{ attackPt }}</td>
+          </tr>
+          <tr>
+            <td>守コスト</td>
+            <td><label><input type="number" name="defence" ng-model="$storage.defence" min="1" required></label></td>
+            <td>{{ baseDefence }}</td>
+            <td>{{ defencePt }}</td>
+          </tr>
+          <tr>
+            <td colspan="3">計</td>
+            <td>{{ totalPt }}</td>
+          </tr>
+        </table>
+        <div>
+          <p class="error" ng-show="calcStatusPt.$error.required">正の整数を入力して下さい。</p>
+          <p class="error" ng-show="calcStatusPt.$error.number">正の整数を入力して下さい。</p>
+          <p class="error" ng-show="calcStatusPt.$error.min">正の整数を入力して下さい。</p>
+        </div>
+      </form>
+    </section>
+  </body>
+</html>
