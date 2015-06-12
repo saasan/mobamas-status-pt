@@ -25,49 +25,108 @@
     </section>
 
     <section class="well">
+      <h3>① 振り分けptがいくつあるか調べる</h3>
       <form name="calcStatusPt">
         <table>
-          <tr>
-            <th></th>
-            <th>現在値</th>
-            <th>基礎値</th>
-            <th>振り分け済pt</th>
-          </tr>
-          <tr>
-            <td>レベル</td>
-            <td><label><input type="number" name="level" ng-model="$storage.level" min="1" required></label></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>スタミナ</td>
-            <td><label><input type="number" name="stamina" ng-model="$storage.stamina" min="1" required></label></td>
-            <td>{{ baseStamina }}</td>
-            <td>{{ staminaPt }}</td>
-          </tr>
-          <tr>
-            <td>攻コスト</td>
-            <td><label><input type="number" name="attack" ng-model="$storage.attack" min="1" required></label></td>
-            <td>{{ baseAttack }}</td>
-            <td>{{ attackPt }}</td>
-          </tr>
-          <tr>
-            <td>守コスト</td>
-            <td><label><input type="number" name="defence" ng-model="$storage.defence" min="1" required></label></td>
-            <td>{{ baseDefence }}</td>
-            <td>{{ defencePt }}</td>
-          </tr>
-          <tr>
-            <td colspan="3">計</td>
-            <td>{{ totalPt }}</td>
-          </tr>
+          <thead>
+            <tr>
+              <th>ステータス</th>
+              <th>現在値</th>
+              <th>基礎値</th>
+              <th>振り分け済pt</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>レベル</td>
+              <td><label><input type="number" name="level" ng-model="$storage.level" min="1" required></label></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>スタミナ</td>
+              <td><label><input type="number" name="stamina" ng-model="$storage.stamina" min="1" required></label></td>
+              <td>{{ baseStamina }}</td>
+              <td>{{ staminaPt }}</td>
+            </tr>
+            <tr>
+              <td>攻コスト</td>
+              <td><label><input type="number" name="attack" ng-model="$storage.attack" min="1" required></label></td>
+              <td>{{ baseAttack }}</td>
+              <td>{{ attackPt }}</td>
+            </tr>
+            <tr>
+              <td>守コスト</td>
+              <td><label><input type="number" name="defence" ng-model="$storage.defence" min="1" required></label></td>
+              <td>{{ baseDefence }}</td>
+              <td>{{ defencePt }}</td>
+            </tr>
+            <tr>
+              <td>未振り分けpt</td>
+              <td><label><input type="number" name="defence" ng-model="$storage.unassignedPt" min="0" required></label></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
         </table>
         <div>
           <p class="error" ng-show="calcStatusPt.$error.required">正の整数を入力して下さい。</p>
           <p class="error" ng-show="calcStatusPt.$error.number">正の整数を入力して下さい。</p>
           <p class="error" ng-show="calcStatusPt.$error.min">正の整数を入力して下さい。</p>
         </div>
+        <p>振り分けpt： {{ totalPt }} pt</p>
       </form>
+    </section>
+
+    <section class="well">
+      <h3>② 振り直しシミュレーター</h3>
+      <form name="newStatusPt">
+        <table>
+          <thead>
+            <tr>
+              <th>ステータス</th>
+              <th>基礎値</th>
+              <th>振り分けpt</th>
+              <th>合計</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>スタミナ</td>
+              <td>{{ baseStamina }}</td>
+              <td><label><input type="number" name="stamina" ng-model="$storage.newStaminaPt" min="0" required></label></td>
+              <td>{{ newStamina }}</td>
+            </tr>
+            <tr>
+              <td>攻コスト</td>
+              <td>{{ baseAttack }}</td>
+              <td><label><input type="number" name="attack" ng-model="$storage.newAttackPt" min="0" required></label></td>
+              <td>{{ newAttack }}</td>
+            </tr>
+            <tr>
+              <td>守コスト</td>
+              <td>{{ baseDefence }}</td>
+              <td><label><input type="number" name="defence" ng-model="$storage.newDefencePt" min="0" required></label></td>
+              <td>{{ newDefence }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div>
+          <p class="error" ng-show="newStatusPt.$error.required">0以上の整数を入力して下さい。</p>
+          <p class="error" ng-show="newStatusPt.$error.number">0以上の整数を入力して下さい。</p>
+          <p class="error" ng-show="newStatusPt.$error.min">0以上の整数を入力して下さい。</p>
+        </div>
+        <p>残り振り分けpt： {{ differencePt }} / {{ totalPt }} pt</p>
+      </form>
+    </section>
+
+    <section>
+      <!-- 振り分けpt レスポンシブ -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-0141905477316976"
+           data-ad-slot="5577065370"
+           data-ad-format="auto"></ins>
     </section>
   </body>
 </html>

@@ -5,7 +5,11 @@ mobamasStatusPt.constant('defaultSettings', {
   level: 100,
   stamina: 83,
   attack: 64,
-  defence: 63
+  defence: 63,
+  unassignedPt: 0,
+  newStaminaPt: 0,
+  newAttackPt: 0,
+  newDefencePt: 0
 });
 
 mobamasStatusPt.controller('MainController', ['$scope', '$localStorage', 'defaultSettings', function($scope, $localStorage, defaultSettings) {
@@ -60,10 +64,19 @@ mobamasStatusPt.controller('MainController', ['$scope', '$localStorage', 'defaul
     $scope.baseStamina = calcBaseStamina($scope.$storage.level);
     $scope.baseAttack = calcBaseAttack($scope.$storage.level);
     $scope.baseDefence = calcBaseDefence($scope.$storage.level);
+
     $scope.staminaPt = $scope.$storage.stamina - $scope.baseStamina;
     $scope.attackPt = $scope.$storage.attack - $scope.baseAttack;
     $scope.defencePt = $scope.$storage.defence - $scope.baseDefence;
-    $scope.totalPt = $scope.staminaPt + $scope.attackPt + $scope.defencePt;
+    $scope.totalPt = $scope.staminaPt + $scope.attackPt + $scope.defencePt + $scope.$storage.unassignedPt;
+
+    $scope.newStamina = $scope.baseStamina + $scope.$storage.newStaminaPt;
+    $scope.newAttack = $scope.baseAttack + $scope.$storage.newAttackPt;
+    $scope.newDefence = $scope.baseDefence + $scope.$storage.newDefencePt;
+    $scope.differencePt = $scope.totalPt -
+      $scope.$storage.newStaminaPt -
+      $scope.$storage.newAttackPt -
+      $scope.$storage.newDefencePt;
   };
 
   update();
@@ -74,7 +87,11 @@ mobamasStatusPt.controller('MainController', ['$scope', '$localStorage', 'defaul
         $scope.$storage.level,
         $scope.$storage.stamina,
         $scope.$storage.attack,
-        $scope.$storage.defence
+        $scope.$storage.defence,
+        $scope.$storage.unassignedPt,
+        $scope.$storage.newStaminaPt,
+        $scope.$storage.newAttackPt,
+        $scope.$storage.newDefencePt
       ];
     },
     function() {
