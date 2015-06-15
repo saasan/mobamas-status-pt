@@ -1,132 +1,122 @@
-<!DOCTYPE html>
-<html lang="ja" ng-app="mobamasStatusPt" ng-controller="MainController">
-  <head>
-    <meta charset="UTF-8">
-    <title>モバマス振り分けpt計算機</title>
-    <link rel="apple-touch-icon" href="//saasan.github.io/img/s2works_favicon.png">
-    <link rel="stylesheet" href="css/main.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
-    <script src="js/main.min.js"></script>
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  </head>
-  <body>
-    <noscript>
-      <p>JavaScriptを有効にして下さい。</p>
-    </noscript>
+---
+layout: page
+title: モバマス振り分けpt計算機
+date: 2015-06-12 14:49:28
+no-user-scalable: true
+category: imas
+---
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+<script src="/js/ngStorage.js"></script>
+<script src="mobamas-status-pt.js"></script>
+<noscript>
+  <p>JavaScriptを有効にして下さい。</p>
+</noscript>
 
-    <section>
-      <!-- 振り分けpt レスポンシブ -->
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-0141905477316976"
-           data-ad-slot="5577065370"
-           data-ad-format="auto"></ins>
-    </section>
+<div ng-app="mobamasStatusPt" ng-controller="MainController">
+  <section class="info">
+    <p>
+      <a href="http://www18.atwiki.jp/imas_cg/pages/433.html" target="_blank">アイドルマスター シンデレラガールズ@wiki - プロデューサーステータス</a>
+      を元に作成しています。
+      現時点では「振り分けptリセット券」が未実装の為、実際にステータスがあっているか確認できていません。
+    </p>
+    <p>
+      なにかあれば
+      <a href="https://twitter.com/saasan" target="_blank">カガミ (@saasan)</a>
+      へどうぞ。
+    </p>
+  </section>
 
-    <section class="well">
-      <h3>① 振り分けptがいくつあるか調べる</h3>
-      <form name="calcStatusPt">
-        <table>
-          <thead>
-            <tr>
-              <th>ステータス</th>
-              <th>現在値</th>
-              <th>基礎値</th>
-              <th>振り分け済pt</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>レベル</td>
-              <td><label><input type="number" name="level" ng-model="$storage.level" min="1" required></label></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>スタミナ</td>
-              <td><label><input type="number" name="stamina" ng-model="$storage.stamina" min="1" required></label></td>
-              <td>{{ baseStamina }}</td>
-              <td>{{ staminaPt }}</td>
-            </tr>
-            <tr>
-              <td>攻コスト</td>
-              <td><label><input type="number" name="attack" ng-model="$storage.attack" min="1" required></label></td>
-              <td>{{ baseAttack }}</td>
-              <td>{{ attackPt }}</td>
-            </tr>
-            <tr>
-              <td>守コスト</td>
-              <td><label><input type="number" name="defence" ng-model="$storage.defence" min="1" required></label></td>
-              <td>{{ baseDefence }}</td>
-              <td>{{ defencePt }}</td>
-            </tr>
-            <tr>
-              <td>未振り分けpt</td>
-              <td><label><input type="number" name="defence" ng-model="$storage.unassignedPt" min="0" required></label></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-        <div>
-          <p class="error" ng-show="calcStatusPt.$error.required">正の整数を入力して下さい。</p>
-          <p class="error" ng-show="calcStatusPt.$error.number">正の整数を入力して下さい。</p>
-          <p class="error" ng-show="calcStatusPt.$error.min">正の整数を入力して下さい。</p>
-        </div>
-        <p>振り分けpt： {{ totalPt }} pt</p>
-      </form>
-    </section>
+  <section class="well">
+    <h3>① 振り分けptがいくつあるか調べる</h3>
+    <p>レベル、スタミナ、攻守コスト、未振り分けptを入力すると、現在振り分けptがいくつあるか分かります。</p>
+    <form name="calcStatusPt">
+      <dl>
+        <dt>レベル</dt>
+        <dd>
+          <button ng-click="$storage.level = $storage.level - 10">-10</button>
+          <button ng-click="$storage.level = $storage.level - 1">-1</button>
+          <input type="number" name="level" ng-model="$storage.level" min="1" required>
+          <button ng-click="$storage.level = $storage.level + 1">+1</button>
+          <button ng-click="$storage.level = $storage.level + 10">+10</button>
+        </dd>
+        <dt>スタミナ</dt>
+        <dd>
+          <button ng-click="$storage.stamina = $storage.stamina - 10">-10</button>
+          <button ng-click="$storage.stamina = $storage.stamina - 1">-1</button>
+          <input type="number" name="stamina" ng-model="$storage.stamina" min="10" required>
+          <button ng-click="$storage.stamina = $storage.stamina + 1">+1</button>
+          <button ng-click="$storage.stamina = $storage.stamina + 10">+10</button>
+        </dd>
+        <dt>攻コスト</dt>
+        <dd>
+          <button ng-click="$storage.attack = $storage.attack - 10">-10</button>
+          <button ng-click="$storage.attack = $storage.attack - 1">-1</button>
+          <input type="number" name="attack" ng-model="$storage.attack" min="10" required>
+          <button ng-click="$storage.attack = $storage.attack + 1">+1</button>
+          <button ng-click="$storage.attack = $storage.attack + 10">+10</button>
+        </dd>
+        <dt>守コスト</dt>
+        <dd>
+          <button ng-click="$storage.defence = $storage.defence - 10">-10</button>
+          <button ng-click="$storage.defence = $storage.defence - 1">-1</button>
+          <input type="number" name="defence" ng-model="$storage.defence" min="10" required>
+          <button ng-click="$storage.defence = $storage.defence + 1">+1</button>
+          <button ng-click="$storage.defence = $storage.defence + 10">+10</button>
+        </dd>
+        <dt>未振り分けpt</dt>
+        <dd>
+          <button ng-click="$storage.unassignedPt = $storage.unassignedPt - 10">-10</button>
+          <button ng-click="$storage.unassignedPt = $storage.unassignedPt - 1">-1</button>
+          <input type="number" name="defence" ng-model="$storage.unassignedPt" min="0" required>
+          <button ng-click="$storage.unassignedPt = $storage.unassignedPt + 1">+1</button>
+          <button ng-click="$storage.unassignedPt = $storage.unassignedPt + 10">+10</button>
+        </dd>
+      </dl>
+      <div>
+        <p class="error" ng-show="calcStatusPt.$error.required">正の整数を入力して下さい。</p>
+        <p class="error" ng-show="calcStatusPt.$error.number">正の整数を入力して下さい。</p>
+        <p class="error" ng-show="calcStatusPt.$error.min">正の整数を入力して下さい。</p>
+      </div>
+      <p class="em">振り分けpt： [[ totalPt ]] pt</p>
+    </form>
+  </section>
 
-    <section class="well">
-      <h3>② 振り直しシミュレーター</h3>
-      <form name="newStatusPt">
-        <table>
-          <thead>
-            <tr>
-              <th>ステータス</th>
-              <th>基礎値</th>
-              <th>振り分けpt</th>
-              <th>合計</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>スタミナ</td>
-              <td>{{ baseStamina }}</td>
-              <td><label><input type="number" name="stamina" ng-model="$storage.newStaminaPt" min="0" required></label></td>
-              <td>{{ newStamina }}</td>
-            </tr>
-            <tr>
-              <td>攻コスト</td>
-              <td>{{ baseAttack }}</td>
-              <td><label><input type="number" name="attack" ng-model="$storage.newAttackPt" min="0" required></label></td>
-              <td>{{ newAttack }}</td>
-            </tr>
-            <tr>
-              <td>守コスト</td>
-              <td>{{ baseDefence }}</td>
-              <td><label><input type="number" name="defence" ng-model="$storage.newDefencePt" min="0" required></label></td>
-              <td>{{ newDefence }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div>
-          <p class="error" ng-show="newStatusPt.$error.required">0以上の整数を入力して下さい。</p>
-          <p class="error" ng-show="newStatusPt.$error.number">0以上の整数を入力して下さい。</p>
-          <p class="error" ng-show="newStatusPt.$error.min">0以上の整数を入力して下さい。</p>
-        </div>
-        <p>残り振り分けpt： {{ differencePt }} / {{ totalPt }} pt</p>
-      </form>
-    </section>
-
-    <section>
-      <!-- 振り分けpt レスポンシブ -->
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-0141905477316976"
-           data-ad-slot="5577065370"
-           data-ad-format="auto"></ins>
-    </section>
-  </body>
-</html>
+  <section class="well">
+    <h3>② 振り直しシミュレーター</h3>
+    <p>基礎値はレベルによって決まっています。先に上のやつを入力しておいてください。</p>
+    <form name="newStatusPt">
+      <dl>
+        <dt>スタミナ： 基礎値 [[ baseStamina ]] + 振り分けpt [[ $storage.newStaminaPt ]] = <em>[[ newStamina ]]</em></dt>
+        <dd>
+          <button ng-click="$storage.newStaminaPt = $storage.newStaminaPt - 10">-10</button>
+          <button ng-click="$storage.newStaminaPt = $storage.newStaminaPt - 1">-1</button>
+          <input type="number" name="newStaminaPt" ng-model="$storage.newStaminaPt" min="0" required>
+          <button ng-click="$storage.newStaminaPt = $storage.newStaminaPt + 1">+1</button>
+          <button ng-click="$storage.newStaminaPt = $storage.newStaminaPt + 10">+10</button>
+        </dd>
+        <dt>攻コスト： 基礎値 [[ baseAttack ]] + 振り分けpt [[ $storage.newAttackPt ]] = <em>[[ newAttack ]]</em></dt>
+        <dd>
+          <button ng-click="$storage.newAttackPt = $storage.newAttackPt - 10">-10</button>
+          <button ng-click="$storage.newAttackPt = $storage.newAttackPt - 1">-1</button>
+          <input type="number" name="newAttackPt" ng-model="$storage.newAttackPt" min="0" required>
+          <button ng-click="$storage.newAttackPt = $storage.newAttackPt + 1">+1</button>
+          <button ng-click="$storage.newAttackPt = $storage.newAttackPt + 10">+10</button>
+        </dd>
+        <dt>守コスト： 基礎値 [[ baseDefence ]] + 振り分けpt [[ $storage.newDefencePt ]] = <em>[[ newDefence ]]</em></dt>
+        <dd>
+          <button ng-click="$storage.newDefencePt = $storage.newDefencePt - 10">-10</button>
+          <button ng-click="$storage.newDefencePt = $storage.newDefencePt - 1">-1</button>
+          <input type="number" name="newDefencePt" ng-model="$storage.newDefencePt" min="0" required>
+          <button ng-click="$storage.newDefencePt = $storage.newDefencePt + 1">+1</button>
+          <button ng-click="$storage.newDefencePt = $storage.newDefencePt + 10">+10</button>
+        </dd>
+      </dl>
+      <div>
+        <p class="error" ng-show="newStatusPt.$error.required">0以上の整数を入力して下さい。</p>
+        <p class="error" ng-show="newStatusPt.$error.number">0以上の整数を入力して下さい。</p>
+        <p class="error" ng-show="newStatusPt.$error.min">0以上の整数を入力して下さい。</p>
+      </div>
+      <p class="em">残り振り分けpt： [[ differencePt ]] / [[ totalPt ]] pt</p>
+    </form>
+  </section>
+</div>

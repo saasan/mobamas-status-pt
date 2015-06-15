@@ -2,27 +2,20 @@
 'use strict';
 var del = require('del');
 var gulp = require('gulp');
-var sass = require('gulp-sass');
 var uglify = require('gulp-uglifyjs');
 var concat = require('gulp-concat');
-var autoprefixer = require('gulp-autoprefixer');
 
 var paths = {
   files: [
     'index.html'
   ],
   out: 'release/',
-  scss: {
-    src: 'scss/*.scss',
-    dest: 'release/css/'
-  },
   js: {
     src: [
-      'bower_components/ngstorage/ngStorage.min.js',
-      'js/main.js'
+      'mobamas-status-pt.js'
     ],
-    dest: 'release/js/',
-    filename: 'main.min.js'
+    dest: 'release/',
+    filename: 'mobamas-status-pt.min.js'
   },
   clean: [
     'release/*'
@@ -34,20 +27,6 @@ gulp.task('clean', del.sync.bind(null, paths.clean, { dot: true }));
 gulp.task('copy', function() {
   gulp.src(paths.files, { base: './' })
     .pipe(gulp.dest(paths.out));
-});
-
-gulp.task('sass', function () {
-  gulp.src(paths.scss.src)
-    .pipe(sass())
-    .pipe(autoprefixer())
-    .pipe(gulp.dest(paths.scss.dest));
-});
-
-gulp.task('sass-release', function () {
-  gulp.src(paths.scss.src)
-    .pipe(sass({ outputStyle: 'compressed' }))
-    .pipe(autoprefixer())
-    .pipe(gulp.dest(paths.scss.dest));
 });
 
 gulp.task('js', function () {
@@ -64,8 +43,7 @@ gulp.task('js-release', function () {
 
 gulp.task('watch', function() {
   gulp.watch('*.html', ['copy']);
-  gulp.watch('scss/*.scss', ['sass']);
-  gulp.watch('js/*.js', ['js']);
+  gulp.watch('*.js', ['js']);
 });
 
 gulp.task('help', function() {
@@ -78,6 +56,6 @@ gulp.task('help', function() {
   console.log('');
 });
 
-gulp.task('compile', ['clean', 'copy', 'sass','js']);
-gulp.task('release', ['clean', 'copy', 'sass-release', 'js-release']);
+gulp.task('compile', ['clean', 'copy', 'js']);
+gulp.task('release', ['clean', 'copy', 'js-release']);
 gulp.task('default', ['compile']);

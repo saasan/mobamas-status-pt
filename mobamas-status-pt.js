@@ -1,5 +1,13 @@
 var mobamasStatusPt = angular.module('mobamasStatusPt', ['ngStorage']);
 
+mobamasStatusPt.config([
+  '$interpolateProvider', '$localStorageProvider',
+  function($interpolateProvider, $localStorageProvider) {
+    $localStorageProvider.namespace('mobamasStatusPt.');
+    $interpolateProvider.startSymbol('[[').endSymbol(']]');
+  }
+]);
+
 // localStorageに保存するユーザー別設定のデフォルト値
 mobamasStatusPt.constant('defaultSettings', {
   level: 100,
@@ -60,15 +68,38 @@ mobamasStatusPt.controller('MainController', ['$scope', '$localStorage', 'defaul
     return 9 + lv;
   };
 
-  var update = function() {
-    $scope.baseStamina = calcBaseStamina($scope.$storage.level);
-    $scope.baseAttack = calcBaseAttack($scope.$storage.level);
-    $scope.baseDefence = calcBaseDefence($scope.$storage.level);
+  var updateTotalPt = function() {
+    var min = {
+      stamina: 10,
+      attack: 10,
+      defence: 10,
+      unassignedPt: 0
+    };
 
-    $scope.staminaPt = $scope.$storage.stamina - $scope.baseStamina;
-    $scope.attackPt = $scope.$storage.attack - $scope.baseAttack;
-    $scope.defencePt = $scope.$storage.defence - $scope.baseDefence;
-    $scope.totalPt = $scope.staminaPt + $scope.attackPt + $scope.defencePt + $scope.$storage.unassignedPt;
+    Object.keys(min).forEach(function(key) {
+      if ($scope.$storage[key] < this[key]) {
+        $scope.$storage[key] = this[key];
+      }
+    }, min);
+
+    var staminaPt = $scope.$storage.stamina - $scope.baseStamina;
+    var attackPt = $scope.$storage.attack - $scope.baseAttack;
+    var defencePt = $scope.$storage.defence - $scope.baseDefence;
+    $scope.totalPt = staminaPt + attackPt + defencePt + $scope.$storage.unassignedPt;
+  };
+
+  var updateNewStatus = function() {
+    var min = {
+      newStaminaPt: 0,
+      newAttackPt: 0,
+      newDefencePt: 0
+    };
+
+    Object.keys(min).forEach(function(key) {
+      if ($scope.$storage[key] < this[key]) {
+        $scope.$storage[key] = this[key];
+      }
+    }, min);
 
     $scope.newStamina = $scope.baseStamina + $scope.$storage.newStaminaPt;
     $scope.newAttack = $scope.baseAttack + $scope.$storage.newAttackPt;
@@ -79,24 +110,54 @@ mobamasStatusPt.controller('MainController', ['$scope', '$localStorage', 'defaul
       $scope.$storage.newDefencePt;
   };
 
-  update();
+  var updateBaseStatus = function() {
+    if ($scope.$storage.level < 1) {
+      $scope.$storage.level = 1;
+    }
+
+    $scope.baseStamina = calcBaseStamina($scope.$storage.level);
+    $scope.baseAttack = calcBaseAttack($scope.$storage.level);
+    $scope.baseDefence = calcBaseDefence($scope.$storage.level);
+
+    updateTotalPt();
+    updateNewStatus();
+  };
+
+  $scope.$watch('$storage.level',
+    function() {
+      if ($scope.calcStatusPt.$valid) {
+        updateBaseStatus();
+      }
+    }
+  );
 
   $scope.$watchCollection(
     function() {
       return [
-        $scope.$storage.level,
         $scope.$storage.stamina,
         $scope.$storage.attack,
         $scope.$storage.defence,
-        $scope.$storage.unassignedPt,
+        $scope.$storage.unassignedPt
+      ];
+    },
+    function() {
+      if ($scope.calcStatusPt.$valid) {
+        updateTotalPt();
+      }
+    }
+  );
+
+  $scope.$watchCollection(
+    function() {
+      return [
         $scope.$storage.newStaminaPt,
         $scope.$storage.newAttackPt,
         $scope.$storage.newDefencePt
       ];
     },
     function() {
-      if ($scope.calcStatusPt.$valid) {
-        update();
+      if ($scope.newStatusPt.$valid) {
+        updateNewStatus();
       }
     }
   );
