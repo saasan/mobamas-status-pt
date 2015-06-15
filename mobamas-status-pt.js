@@ -68,28 +68,13 @@ mobamasStatusPt.controller('MainController', ['$scope', '$localStorage', 'defaul
     return 9 + lv;
   };
 
-  var updateTotalPt = function() {
+  var update = function() {
     var min = {
+      level:1,
       stamina: 10,
       attack: 10,
       defence: 10,
-      unassignedPt: 0
-    };
-
-    Object.keys(min).forEach(function(key) {
-      if ($scope.$storage[key] < this[key]) {
-        $scope.$storage[key] = this[key];
-      }
-    }, min);
-
-    var staminaPt = $scope.$storage.stamina - $scope.baseStamina;
-    var attackPt = $scope.$storage.attack - $scope.baseAttack;
-    var defencePt = $scope.$storage.defence - $scope.baseDefence;
-    $scope.totalPt = staminaPt + attackPt + defencePt + $scope.$storage.unassignedPt;
-  };
-
-  var updateNewStatus = function() {
-    var min = {
+      unassignedPt: 0,
       newStaminaPt: 0,
       newAttackPt: 0,
       newDefencePt: 0
@@ -101,6 +86,15 @@ mobamasStatusPt.controller('MainController', ['$scope', '$localStorage', 'defaul
       }
     }, min);
 
+    $scope.baseStamina = calcBaseStamina($scope.$storage.level);
+    $scope.baseAttack = calcBaseAttack($scope.$storage.level);
+    $scope.baseDefence = calcBaseDefence($scope.$storage.level);
+
+    var staminaPt = $scope.$storage.stamina - $scope.baseStamina;
+    var attackPt = $scope.$storage.attack - $scope.baseAttack;
+    var defencePt = $scope.$storage.defence - $scope.baseDefence;
+    $scope.totalPt = staminaPt + attackPt + defencePt + $scope.$storage.unassignedPt;
+
     $scope.newStamina = $scope.baseStamina + $scope.$storage.newStaminaPt;
     $scope.newAttack = $scope.baseAttack + $scope.$storage.newAttackPt;
     $scope.newDefence = $scope.baseDefence + $scope.$storage.newDefencePt;
@@ -110,54 +104,22 @@ mobamasStatusPt.controller('MainController', ['$scope', '$localStorage', 'defaul
       $scope.$storage.newDefencePt;
   };
 
-  var updateBaseStatus = function() {
-    if ($scope.$storage.level < 1) {
-      $scope.$storage.level = 1;
-    }
-
-    $scope.baseStamina = calcBaseStamina($scope.$storage.level);
-    $scope.baseAttack = calcBaseAttack($scope.$storage.level);
-    $scope.baseDefence = calcBaseDefence($scope.$storage.level);
-
-    updateTotalPt();
-    updateNewStatus();
-  };
-
-  $scope.$watch('$storage.level',
-    function() {
-      if ($scope.calcStatusPt.$valid) {
-        updateBaseStatus();
-      }
-    }
-  );
-
   $scope.$watchCollection(
     function() {
       return [
+        $scope.$storage.level,
         $scope.$storage.stamina,
         $scope.$storage.attack,
         $scope.$storage.defence,
-        $scope.$storage.unassignedPt
-      ];
-    },
-    function() {
-      if ($scope.calcStatusPt.$valid) {
-        updateTotalPt();
-      }
-    }
-  );
-
-  $scope.$watchCollection(
-    function() {
-      return [
+        $scope.$storage.unassignedPt,
         $scope.$storage.newStaminaPt,
         $scope.$storage.newAttackPt,
         $scope.$storage.newDefencePt
       ];
     },
     function() {
-      if ($scope.newStatusPt.$valid) {
-        updateNewStatus();
+      if ($scope.calcStatusPt.$valid) {
+        update();
       }
     }
   );
